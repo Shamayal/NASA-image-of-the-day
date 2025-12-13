@@ -5,13 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NASA - Image of the Day</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="script.js" defer></script>
 </head>
 <body>
   <h1>NASA</h1>
-  <div>
+  <div class="search-container">
     <label>Select a date:</label>
-    <input type="date" />
-    <button>Fetch Image</button>
+    <input type="date" id="datePicker"/>
+    <button id="fetchBtn">Fetch Image</button>
   </div>
+
+  <div class="image-container">
+    <img id="iotdImage" src="" alt="NASA Image of the Day"/>
+    <h2 id="title"></h2>
+    <p id="description"></p>
+    <a id="hdLink" href="" target="_blank" download>Download HD Image</a>
+  </div>
+
+  <h2>Recently Viewed</h2>
+  <div class="carousel"></div>
 </body>
 </html>
