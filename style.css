@@ -15,3 +15,13 @@ max-width: 90%;
 margin-top: 20px;
 border-radius: 10px;
 }
+
+#hdLink {
+display: inline-block;
+margin-top: 10px;
+background: #1a73e8;
+padding: 10px;
+border-radius: 6px;
+color: white;
+text-decoration: none;
+}
