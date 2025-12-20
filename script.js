@@ -13,6 +13,10 @@ let recentImages = [];
 async function fetchIOTD(date = "") {
   const url = date ? `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}&date=${date}`
 : `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}`;
+
+const response = await fetch(url);
+const data = await response.json();
+// display image and carousel
 }
 // function to display image
 
