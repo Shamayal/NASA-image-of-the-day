@@ -1,7 +1,5 @@
 // import express
 const express = require("express");
-// allows Node.js to make HTTP requests
-const fetch = require("node-fetch");
 // loads .env file into process.env
 require("dotenv").config();
 
@@ -10,7 +8,7 @@ const app = express();
 // port that server runs on
 const PORT = 3000;
 
-// function runs when someone visits /api/apid
+// function runs when someone visits /api/apod
 app.get("/api/apod", async (req, res) => {
   try {
     const date = req.query.date;
