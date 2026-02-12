@@ -1,4 +1,3 @@
-const data = await fetchApod(date);
 import { fetchApod } from "./api.js";
 
 const fetchBtn = document.getElementById("fetchBtn");
