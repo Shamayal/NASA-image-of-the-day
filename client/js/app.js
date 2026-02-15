@@ -13,7 +13,6 @@ fetchBtn.addEventListener("click", async () => {
 
   const data = await fetchApod(date);
 
-  console.log(data);
   image.src = data.url;
   title.textContext = data.title;
   description.textContent = data.explanation;
