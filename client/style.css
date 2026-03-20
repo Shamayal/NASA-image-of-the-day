@@ -16,6 +16,10 @@ margin-top: 20px;
 border-radius: 10px;
 }
 
+#iotdVideo {
+  display: none;
+}
+
 #hdLink {
 display: inline-block;
 margin-top: 10px;
