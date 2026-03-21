@@ -1,6 +1,7 @@
 // import express
 const express = require("express");
 const path = require("path");
+const fetch = require("node-fetch");
 // loads .env file into process.env
 require("dotenv").config();
 
