@@ -29,6 +29,6 @@ fetchBtn.addEventListener("click", async () => {
     hdLink.style.display = "none";
   }
 
-  title.textContext = data.title;
+  title.textContent = data.title;
   description.textContent = data.explanation;
 });
