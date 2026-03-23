@@ -16,29 +16,39 @@ app.use(express.static(path.join(__dirname, "../client")));
 // function runs when someone visits /api/apod
 app.get("/api/apod", async (req, res) => {
   try {
-    const date = req.query.date;
+    const params = new URLSearchParams();
+
+    params.set("api_key", process.env.NASA_API_KEY);
+
+    if (req.query.date) {
+      params.set("date", req.query.date);
+    }
 
     // API key coming from process.env
-    let url = `https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_KEY}`;
-
-    if (date) {
-      url += `&date=${date}`;
-    }
-
+    const url = `https://science.nasa.gov/wp-json/wp/v2/apod-basic/?${params}`;
+    
     // send request to NASA, get response and convert to JSON
     const response = await fetch(url);
+    const date = await response.json();
 
     if (!response.ok) {
-      throw new Error("NASA API request failed");
+      console.error("NASA API error:", response.status, data);
+
+      return res.status(response.status).json({
+        error: "NASA API request failed",
+        details: data
+      });
     }
-    
-    const data = await response.json();
 
     // send data to frontend (browser)
     res.json(data);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to fetch APOD" });
+    console.error("Server error:", error.message);
+
+    res.status(500).json({
+      error: "Failed to fetch APOD",
+      details: error.message
+    });
   }
 });
 
