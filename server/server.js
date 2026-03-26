@@ -29,7 +29,7 @@ app.get("/api/apod", async (req, res) => {
     
     // send request to NASA, get response and convert to JSON
     const response = await fetch(url);
-    const date = await response.json();
+    const data = await response.json();
 
     if (!response.ok) {
       console.error("NASA API error:", response.status, data);
