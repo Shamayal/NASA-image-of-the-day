@@ -8,41 +8,49 @@ const title = document.getElementById("title");
 const description = document.getElementById("description");
 const hdLink = document.getElementById("hdLink");
 
-// listen for button click, get selected date, and ask api.js for the data
 fetchBtn.addEventListener("click", async () => {
-  const date = datePicker.value;
-
   try {
-    fetchBtn.disabled = true;
+    const date = datePicker.value;
+    
+    // Loading message
+    title.textContent = "Loading ...";
+    description.textContent = "";
 
+    // Hide old media
+    image.style.display = "none";
+    video.style.display = "none";
+    hdLink.style.display = "none";
+
+    // Get APOD data from our server
     const data = await fetchApod(date);
+    console.log("APOD data:", data);
+    console.log("Media type:", data.media_type);
+    console.log("Date:", data.date)
+    console.log("Image URL:", data.hdurl);
+    console.log("Regular URL:", data.url);
+    console.log("Is array?", Array.isArray(data));
 
     title.textContent = data.title;
-    description.textContent = data.explanation;
+    description.innerHTML = data.explanation;
 
-    if (data.media_type === "image" && data.hdurl) {
+    // Display image or video
+    if (data.media_type === "image") {
       image.src = data.hdurl;
       image.alt = data.alt || data.title;
       image.style.display = "block";
-      video.style.display = "none";
 
       hdLink.href = data.hdurl;
       hdLink.textContent = "View full-size image";
-      hdLink.style.display = "inline-block";
+      hdLink.display = "inline-block";
+    } else if (data.media_type === "video") {
+      video.src = data.url;
+      video.style.display = "block";
     } else {
-      image.style.display = "none";
-      video.style.display = "none";
-
-      hdLink.href = data.url;
-      hdLink.textContent = "View APOD on NASA";
-      hdLink.style.display = "inline-block";
+      description.textContent += "\n\nNo supported image or video is available.";
     }
   } catch (error) {
-    console.error("Failed to load APID:", error);
-
-    title.textContent = "Unable to load APOD";
-    description.textContent = "Please try again later or check the server terminal for detail.";
-  } finally {
-    fetchBtn.disabled = false;
+    console.error("Error loading APOD:", error);
+    title.textContent = "Error loading NASA's Astronomy Picture of the Day";
+    description.textContent = "Could not load NASA's Astronomy Picture of the Day";
   }
 });
