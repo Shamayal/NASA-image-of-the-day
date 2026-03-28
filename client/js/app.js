@@ -22,8 +22,10 @@ fetchBtn.addEventListener("click", async () => {
     hdLink.style.display = "none";
 
     // Get APOD data from our server
-    const data = await fetchApod(date);
+    const result = await fetchApod(date);
+    const data = Array.isArray(result) ? result[0] : result;
     console.log("APOD data:", data);
+    console.log("Full response:", JSON.stringify(data, null, 2));
     console.log("Media type:", data.media_type);
     console.log("Date:", data.date)
     console.log("Image URL:", data.hdurl);
@@ -41,7 +43,7 @@ fetchBtn.addEventListener("click", async () => {
 
       hdLink.href = data.hdurl;
       hdLink.textContent = "View full-size image";
-      hdLink.display = "inline-block";
+      hdLink.style.display = "inline-block";
     } else if (data.media_type === "video") {
       video.src = data.url;
       video.style.display = "block";
