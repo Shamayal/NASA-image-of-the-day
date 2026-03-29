@@ -25,7 +25,7 @@ app.get("/api/apod", async (req, res) => {
     }
 
     // API key coming from process.env
-    const url = `https://science.nasa.gov/wp-json/wp/v2/apod-basic/?${params}`;
+    const url = `https://api.nasa.gov/planetary/apod?${params}`;
     
     // send request to NASA, get response and convert to JSON
     const response = await fetch(url);
