@@ -23,35 +23,50 @@ fetchBtn.addEventListener("click", async () => {
 
     // Get APOD data from our server
     const result = await fetchApod(date);
-    const data = Array.isArray(result) ? result[0] : result;
-    console.log("APOD data:", data);
-    console.log("Full response:", JSON.stringify(data, null, 2));
-    console.log("Media type:", data.media_type);
-    console.log("Date:", data.date)
-    console.log("Image URL:", data.hdurl);
-    console.log("Regular URL:", data.url);
-    console.log("Is array?", Array.isArray(data));
+    const data = Array.isArray(result) ? result.find(item => item.date === datePicker.value) : result;
+    if (!data) {
+      throw new Error("No APOD data found for the selected date.")
+    }
 
     title.textContent = data.title;
     description.innerHTML = data.explanation;
 
     // Display image or video
     if (data.media_type === "image") {
-      image.src = data.hdurl;
+      image.onload = () => {
+        image.style.display = "block";
+      };
+
+      image.onerror = () => {
+        description.textContent += "\n\nThe image could not be loaded. Try opening it on NASA's website.";
+        hdLink.hred = data.url;
+        hdLink.textContent = "View on NASA";
+        hdLink.style.display = "inline-block";
+      };
+
+      image.src = data.url;
       image.alt = data.alt || data.title;
       image.style.display = "block";
 
-      hdLink.href = data.hdurl;
+      hdLink.href = data.hdurl || data.url;
       hdLink.textContent = "View full-size image";
       hdLink.style.display = "inline-block";
-    } else if (data.media_type === "video") {
-      video.src = data.url;
+
+    } else if (data.media_type === "video" || data.media_type === "iframe") {
+      const videoUrl = data.url;
+
+      video.src = videoUrl;
       video.style.display = "block";
+
+      description.textContent += "\n\nThis APOD contains video or embedded media.";
+
+      hdLink.href = data.permalink || data.url;
+      hdLink.textContent = "Watch on NASA";
+      hdLink.style.display = "inline-block";
     } else {
       description.textContent += "\n\nNo supported image or video is available.";
     }
   } catch (error) {
-    console.error("Error loading APOD:", error);
     title.textContent = "Error loading NASA's Astronomy Picture of the Day";
     description.textContent = "Could not load NASA's Astronomy Picture of the Day";
   }
